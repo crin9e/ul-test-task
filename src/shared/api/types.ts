@@ -1,8 +1,26 @@
-export type AuctionType = 'Request' | 'Up' | 'Down' | 'FixPrice' | 'Unknown';
-export type AuctionStatus = 'Planning' | 'Auction' | 'DeterminateWinner' | 'WaitDeal' | 'InProgress' | 'Finished' | 'Stopped' | 'Canceled' | 'Unknown';
-export type TradingStatus = 'NotParticipating' | 'Leading' | 'Losing' | 'OnPending' | 'Confirmed' | 'ChoosingWinner' | 'Winner' | 'Accepted' | 'Unknown';
-export type BidMeasurementType = 'PerRoute' | 'PerKm' | 'Unknown';
-export type PaymentDelayType = 'CalendarDays' | 'WorkDays' | 'Unknown' | null;
+export type AuctionType = "Request" | "Up" | "Down" | "FixPrice" | "Unknown";
+export type AuctionStatus =
+  | "Planning"
+  | "Auction"
+  | "DeterminateWinner"
+  | "WaitDeal"
+  | "InProgress"
+  | "Finished"
+  | "Stopped"
+  | "Canceled"
+  | "Unknown";
+export type TradingStatus =
+  | "NotParticipating"
+  | "Leading"
+  | "Losing"
+  | "OnPending"
+  | "Confirmed"
+  | "ChoosingWinner"
+  | "Winner"
+  | "Accepted"
+  | "Unknown";
+export type BidMeasurementType = "PerRoute" | "PerKm" | "Unknown";
+export type PaymentDelayType = "CalendarDays" | "WorkDays" | "Unknown" | null;
 
 export interface AuctionListMeta {
   current_page?: number;
@@ -232,7 +250,7 @@ export interface AuctionListRequest {
   page?: number;
   per_page?: number;
   is_oldest?: boolean | null;
-  sort?: Record<string, 'asc' | 'desc'> | null;
+  sort?: Record<string, "asc" | "desc"> | null;
   status?: TradingStatus[];
   mobile_statuses?: number[];
   statuses?: number[];
