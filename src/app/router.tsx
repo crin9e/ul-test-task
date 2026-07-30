@@ -4,6 +4,7 @@ import {
   createRouter,
   Outlet,
 } from "@tanstack/react-router";
+import { parseAuctionListSearch } from "../features/filter-auctions";
 import { AuctionsPage } from "../pages/auctions-page";
 import { AuctionDetailPage } from "../pages/auction-detail-page";
 import { BetsPage } from "../pages/bets-page";
@@ -18,6 +19,7 @@ const rootRoute = createRootRoute({
 const auctionsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "auctions",
+  validateSearch: parseAuctionListSearch,
   component: AuctionsPage,
 });
 

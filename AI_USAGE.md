@@ -1,6 +1,6 @@
 # AI Usage
 
-AI assistance was used to setup the project, inspect the OpenAPI contract, implement the Phase 1 MSW seed store and handlers, add focused mock-backend tests and documentation.
+AI assistance was used to setup the project, inspect the OpenAPI contract; implement the Phase 1 MSW seed store and handlers, add focused mock-backend tests and documentation; implement Phase 2 domain mapping, search parsing, request normalization, and bid validation.
 
 ## Review decisions
 
@@ -12,6 +12,7 @@ AI assistance was used to setup the project, inspect the OpenAPI contract, imple
 - Ranking direction follows the auction type: `Up` is descending, while `Request`, `Down`, and `FixPrice` are ascending.
 - Decimal-safe step validation uses scaled integer arithmetic with the non-null minimum as the base, otherwise zero.
 - Pico owns shared component styling; application-specific responsive layout and state variants use CSS Modules.
+- Auction DTOs are mapped through pure ViewModel functions, URL search values are parsed defensively, and decimal bid steps use scaled integer validation.
 
 ## Carefully checked areas
 
@@ -20,3 +21,4 @@ AI assistance was used to setup the project, inspect the OpenAPI contract, imple
 - Bid mutation consistency across list, detail, and bets.
 - Pagination metadata after filtering.
 - Reset behavior between tests.
+- Every contract enum branch, hidden-data mapping, malformed search fallback, and bid constraint branch.
