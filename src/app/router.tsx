@@ -10,6 +10,10 @@ import { AuctionDetailPage } from "../pages/auction-detail-page";
 import { BetsPage } from "../pages/bets-page";
 import { BidPage } from "../pages/bid-page";
 import { NotFoundPage } from "../pages/not-found-page";
+import {
+  parseAppSearch,
+  stringifyAppSearch,
+} from "../shared/lib/search-params";
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -60,6 +64,10 @@ const routeTree = rootRoute.addChildren([
   bidRoute,
 ]);
 
-export const router = createRouter({ routeTree });
+export const router = createRouter({
+  routeTree,
+  parseSearch: parseAppSearch,
+  stringifySearch: stringifyAppSearch,
+});
 
 export type RouterType = typeof router;

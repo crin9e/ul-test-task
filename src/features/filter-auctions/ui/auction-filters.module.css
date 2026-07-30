@@ -1,0 +1,102 @@
+.form {
+  display: grid;
+  gap: var(--pico-spacing);
+}
+
+.form fieldset,
+.form label,
+.form input,
+.form select {
+  margin-bottom: 0;
+}
+
+.twoColumns {
+  display: grid;
+  gap: var(--pico-spacing);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.optionGrid {
+  display: grid;
+  gap: calc(var(--pico-spacing) / 2);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.optionGrid label {
+  align-items: flex-start;
+  display: flex;
+  font-size: 0.9rem;
+  gap: calc(var(--pico-spacing) / 2);
+}
+
+.optionGrid input {
+  flex: 0 0 auto;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pico-spacing);
+}
+
+.actions button {
+  flex: 1 1 8rem;
+  margin: 0;
+}
+
+.desktopPanel {
+  align-self: start;
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  padding: var(--pico-spacing);
+}
+
+.desktopPanel h2 {
+  font-size: 1.25rem;
+}
+
+.mobileToggle {
+  display: none;
+  margin-bottom: var(--pico-spacing);
+  width: 100%;
+}
+
+.dialog article {
+  max-height: calc(100vh - 2rem);
+  overflow: auto;
+}
+
+.dialogHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dialogHeader h2 {
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  .desktopPanel {
+    display: none;
+  }
+
+  .mobileToggle {
+    display: block;
+  }
+
+  .dialog {
+    padding: 0.5rem;
+  }
+
+  .dialog article {
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .twoColumns,
+  .optionGrid {
+    grid-template-columns: 1fr;
+  }
+}
