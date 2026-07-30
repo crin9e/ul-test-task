@@ -20,6 +20,14 @@ The development build starts an MSW browser worker and serves the mock API under
 
 Pico CSS is loaded globally before application styles. `src/styles.css` contains only Pico design-token overrides and global accessibility behavior. Component-specific layout and visual variants use CSS Modules so they do not override Pico's shared `.container`, `.grid`, or card styles.
 
+## Domain Logic
+
+Auction DTOs remain unchanged at the API boundary and are converted to display ViewModels in `entities/auction`. Enum labels have safe runtime fallbacks, hidden-data flags remove protected values, and numeric zero remains distinct from missing data.
+
+The `/auctions` search parser accepts URL strings or typed values, replaces malformed values with safe defaults, discards invalid enum members, and maps valid state to a normalized `AuctionListRequest`. Supported sort values are `start_time_asc`, `start_time_desc`, `current_price_asc`, `current_price_desc`, `price_per_km_asc`, and `price_per_km_desc`.
+
+Bid step validation uses the non-null minimum as its base, otherwise zero. Decimal values are compared with scaled integer arithmetic to avoid floating-point noise.
+
 ## Verification
 
 ```bash
@@ -44,19 +52,19 @@ The list operation supports the required filters, supported sorting keys, and pa
 
 ### Mock scenarios
 
-| Scenario | UUID | Purpose |
-| --- | --- | --- |
-| Active, first bid | `11111111-1111-4111-8111-111111111111` | User may place an initial bid |
-| Active, leading | `22222222-2222-4222-8222-222222222222` | User may change a leading bid |
-| Active, losing | `33333333-3333-4333-8333-333333333333` | User may change a losing bid |
-| Finished, winner | `44444444-4444-4444-8444-444444444444` | Visible history, winner, and rejected bid |
-| Planning, no bids | `55555555-5555-4555-8555-555555555555` | Empty bid history |
-| Hidden history | `66666666-6666-4666-8666-666666666666` | Protected bid history |
-| Hidden contacts | `77777777-7777-4777-8777-777777777777` | Hidden addresses and contacts |
-| Hidden cargo price | `88888888-8888-4888-8888-888888888888` | Cargo price and places restrictions |
-| Nullable fields | `99999999-9999-4999-8999-999999999999` | Null and zero-value coverage |
-| Cancelled auction | `aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa` | Cancelled and unknown trading status |
-| Unknown enums | `bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb` | Contract `Unknown` enum branches |
+| Scenario           | UUID                                   | Purpose                                   |
+| ------------------ | -------------------------------------- | ----------------------------------------- |
+| Active, first bid  | `11111111-1111-4111-8111-111111111111` | User may place an initial bid             |
+| Active, leading    | `22222222-2222-4222-8222-222222222222` | User may change a leading bid             |
+| Active, losing     | `33333333-3333-4333-8333-333333333333` | User may change a losing bid              |
+| Finished, winner   | `44444444-4444-4444-8444-444444444444` | Visible history, winner, and rejected bid |
+| Planning, no bids  | `55555555-5555-4555-8555-555555555555` | Empty bid history                         |
+| Hidden history     | `66666666-6666-4666-8666-666666666666` | Protected bid history                     |
+| Hidden contacts    | `77777777-7777-4777-8777-777777777777` | Hidden addresses and contacts             |
+| Hidden cargo price | `88888888-8888-4888-8888-888888888888` | Cargo price and places restrictions       |
+| Nullable fields    | `99999999-9999-4999-8999-999999999999` | Null and zero-value coverage              |
+| Cancelled auction  | `aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa` | Cancelled and unknown trading status      |
+| Unknown enums      | `bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb` | Contract `Unknown` enum branches          |
 
 The seed set covers every `AuctionStatus`, every `AuctionType`, every `TradingStatus` across list/detail representations, and every `BidMeasurementType`.
 
@@ -85,4 +93,4 @@ The mock derives no-VAT values using a 20% VAT rate. A successful set-bid respon
 
 ## Current scope
 
-Phase 1, the stateful mock API, is implemented. Later product phases continue to build domain mappers and the complete list, detail, history, and bid-form UI.
+Phases 1 and 2 are implemented: the stateful mock API, domain ViewModels and formatters, list-search parsing and request mapping, and bid validation. Later phases build the complete list, detail, history, and bid-form UI.

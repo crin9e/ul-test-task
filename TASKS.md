@@ -163,12 +163,12 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Every OpenAPI enum value is handled.
-- [ ] Unknown runtime values produce a safe label.
-- [ ] Numeric zero is not treated as missing.
-- [ ] Hidden-data flags affect mapped output/actions.
-- [ ] Primary action matches `can_set_bet`, `your.bet`, and history visibility.
-- [ ] Unit tests cover key branches.
+- [x] Every OpenAPI enum value is handled.
+- [x] Unknown runtime values produce a safe label.
+- [x] Numeric zero is not treated as missing.
+- [x] Hidden-data flags affect mapped output/actions.
+- [x] Primary action matches `can_set_bet`, `your.bet`, and history visibility.
+- [x] Unit tests cover key branches.
 
 ---
 
@@ -187,12 +187,12 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Invalid page/per-page values fall back safely.
-- [ ] Invalid enum values are discarded or replaced safely.
-- [ ] Date values are validated.
-- [ ] Price ranges are numeric and non-negative.
-- [ ] All minimum assignment filters map to correct snake_case fields.
-- [ ] Tests cover valid, invalid, partial, and empty search states.
+- [x] Invalid page/per-page values fall back safely.
+- [x] Invalid enum values are discarded or replaced safely.
+- [x] Date values are validated.
+- [x] Price ranges are numeric and non-negative.
+- [x] All minimum assignment filters map to correct snake_case fields.
+- [x] Tests cover valid, invalid, partial, and empty search states.
 
 ---
 
@@ -209,12 +209,12 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Price is required and greater than zero.
-- [ ] Non-null min/max are enforced.
-- [ ] Non-null step is enforced using documented base behavior.
-- [ ] Decimal steps do not fail because of floating-point noise.
-- [ ] Null constraints do not introduce restrictions.
-- [ ] Tests pass.
+- [x] Price is required and greater than zero.
+- [x] Non-null min/max are enforced.
+- [x] Non-null step is enforced using documented base behavior.
+- [x] Decimal steps do not fail because of floating-point noise.
+- [x] Null constraints do not introduce restrictions.
+- [x] Tests pass.
 
 ## Phase 3 — Auction list
 
