@@ -1,12 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-import { getAuction, getAuctionBets, listAuctions } from './client';
-import { AuctionListRequest } from './types';
+import { useQuery } from "@tanstack/react-query";
+import { getAuction, getAuctionBets, listAuctions } from "./client";
+import { AuctionListRequest } from "./types";
 
 export const auctionQueryKeys = {
-  all: ['auctions'] as const,
-  list: (request: AuctionListRequest) => [...auctionQueryKeys.all, 'list', request] as const,
-  detail: (auctionUuid: string) => [...auctionQueryKeys.all, 'detail', auctionUuid] as const,
-  bets: (auctionUuid: string, all = false) => [...auctionQueryKeys.all, 'bets', auctionUuid, all] as const,
+  all: ["auctions"] as const,
+  list: (request: AuctionListRequest) =>
+    [...auctionQueryKeys.all, "list", request] as const,
+  detail: (auctionUuid: string) =>
+    [...auctionQueryKeys.all, "detail", auctionUuid] as const,
+  bets: (auctionUuid: string, all = false) =>
+    [...auctionQueryKeys.all, "bets", auctionUuid, all] as const,
 };
 
 export function useAuctionList(request: AuctionListRequest) {

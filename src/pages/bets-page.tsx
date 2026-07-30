@@ -1,17 +1,28 @@
-import { useParams } from '@tanstack/react-router';
-import { useAuctionBets } from '../shared/api/queries';
-import { ErrorState, LoadingState, PageShell } from '../shared/ui/state';
+import { useParams } from "@tanstack/react-router";
+import { useAuctionBets } from "../shared/api/queries";
+import { ErrorState, LoadingState, PageShell } from "../shared/ui/state";
 
 export function BetsPage() {
-  const params = useParams({ from: '/auctions/$auctionUuid/bets' });
-  const { data, isPending, isError, error, refetch } = useAuctionBets(params.auctionUuid);
+  const params = useParams({ from: "/auctions/$auctionUuid/bets" });
+  const { data, isPending, isError, error, refetch } = useAuctionBets(
+    params.auctionUuid,
+  );
 
   if (isPending) {
     return <LoadingState />;
   }
 
   if (isError) {
-    return <ErrorState message={error instanceof Error ? error.message : 'Не удалось загрузить ставки.'} onRetry={() => void refetch()} />;
+    return (
+      <ErrorState
+        message={
+          error instanceof Error
+            ? error.message
+            : "Не удалось загрузить ставки."
+        }
+        onRetry={() => void refetch()}
+      />
+    );
   }
 
   const bets = data.bets ?? [];
@@ -25,7 +36,8 @@ export function BetsPage() {
           <ul>
             {bets.map((bet) => (
               <li key={bet.id}>
-                <strong>{bet.organization_name}</strong> — {bet.price_with_vat} ₽
+                <strong>{bet.organization_name}</strong> — {bet.price_with_vat}{" "}
+                ₽
               </li>
             ))}
           </ul>
