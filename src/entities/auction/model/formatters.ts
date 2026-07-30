@@ -65,6 +65,18 @@ export function formatMoney(
     : `${formattedValue} ден. ед.`;
 }
 
+export function formatCurrencyCode(
+  currencyCode: string | number | null | undefined,
+): string {
+  if (currencyCode === null || currencyCode === undefined || currencyCode === '') {
+    return EMPTY_VALUE;
+  }
+
+  const normalizedCode = String(currencyCode);
+  const currency = currencyByNumericCode[normalizedCode];
+  return currency ? `${currency} (${normalizedCode})` : `Код валюты ${normalizedCode}`;
+}
+
 export function formatDateTime(value: string | null | undefined): string {
   if (!value) {
     return EMPTY_VALUE;

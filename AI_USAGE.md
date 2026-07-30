@@ -1,6 +1,6 @@
 # AI Usage
 
-AI assistance was used to setup the project, inspect the OpenAPI contract; implement the Phase 1 MSW seed store and handlers, add focused mock-backend tests and documentation; implement Phase 2 domain mapping, search parsing, request normalization, and bid validation; and implement the Phase 3 query layer, filters, auction cards, pagination, responsive states, and integration tests.
+AI assistance was used to setup the project, inspect the OpenAPI contract; implement the Phase 1 MSW seed store and handlers, add focused mock-backend tests and documentation; implement Phase 2 domain mapping, search parsing, request normalization, and bid validation; implement the Phase 3 query layer, filters, auction cards, pagination, responsive states, and integration tests; and implement the Phase 4 detail ViewModel, responsive detail sections, privacy rules, UUID gating, and API-state tests.
 
 ## Review decisions
 
@@ -23,3 +23,4 @@ AI assistance was used to setup the project, inspect the OpenAPI contract; imple
 - Reset behavior between tests.
 - Every contract enum branch, hidden-data mapping, malformed search fallback, and bid constraint branch.
 - Query-key normalization, retry exclusions, detail prefetching, URL filter updates, pagination state preservation, and responsive list semantics.
+- Detail route ordering, nullable contract fields, protected-data removal, action visibility, UUID validation, and distinct `401`/`404`/`503` behavior.

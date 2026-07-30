@@ -28,6 +28,8 @@ The `/auctions` search parser accepts URL strings or typed values, replaces malf
 
 The auction list keeps filters, sorting, and pagination in the URL. Desktop uses a persistent Pico filter panel; mobile uses a native modal dialog whose open state is the only value stored in Zustand. TanStack Query retains visible page data while the next page loads and prefetches auction detail on mouse or keyboard intent.
 
+The `/auctions/$auctionUuid` detail route validates the UUID before API use and renders mapped overview, organizer, ordered route, cargo/vehicle, payment, and trading sections. Protected contacts, exact addresses, cargo prices, and bid-history actions are removed according to the detail DTO flags. `401`, `404`, and `503` responses have distinct states, with `trace_id` available in expandable technical details.
+
 Bid step validation uses the non-null minimum as its base, otherwise zero. Decimal values are compared with scaled integer arithmetic to avoid floating-point noise.
 
 ## Verification
@@ -95,4 +97,4 @@ The mock derives no-VAT values using a 20% VAT rate. A successful set-bid respon
 
 ## Current scope
 
-Phases 1–3 are implemented: the stateful mock API, domain ViewModels and formatters, pure validation logic, and the complete URL-driven auction list with filters, sorting, pagination, responsive cards, prefetching, and loading/empty/error states. Later phases build the complete detail, history, and bid-form UI.
+Phases 1–4 are implemented: the stateful mock API, domain ViewModels and pure validation, the complete URL-driven auction list, and the responsive auction detail page with privacy enforcement and distinct API states. Later phases build bid history and the bid form.
