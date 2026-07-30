@@ -3,13 +3,16 @@ import {
   createRoute,
   createRouter,
   Outlet,
-  NotFoundRoute,
 } from "@tanstack/react-router";
 import { AuctionsPage } from "../pages/auctions-page";
+import { AuctionDetailPage } from "../pages/auction-detail-page";
+import { BetsPage } from "../pages/bets-page";
+import { BidPage } from "../pages/bid-page";
 import { NotFoundPage } from "../pages/not-found-page";
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
+  notFoundComponent: NotFoundPage,
 });
 
 const auctionsRoute = createRoute({
@@ -18,24 +21,43 @@ const auctionsRoute = createRoute({
   component: AuctionsPage,
 });
 
+const auctionDetailRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "auctions/$auctionUuid",
+  component: AuctionDetailPage,
+});
+
+const betsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "auctions/$auctionUuid/bets",
+  component: BetsPage,
+});
+
+const bidRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "auctions/$auctionUuid/bid",
+  component: BidPage,
+});
+
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: () => (
-    <div className="container">
+    <main className="container">
       <h1>Грузовые аукционы</h1>
       <p>Добро пожаловать в приложение.</p>
-    </div>
+    </main>
   ),
 });
 
-const notFoundRoute = new NotFoundRoute({
-  getParentRoute: () => rootRoute,
-  component: NotFoundPage,
-});
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  auctionsRoute,
+  auctionDetailRoute,
+  betsRoute,
+  bidRoute,
+]);
 
-const routeTree = rootRoute.addChildren([indexRoute, auctionsRoute]);
-
-export const router = createRouter({ routeTree, notFoundRoute });
+export const router = createRouter({ routeTree });
 
 export type RouterType = typeof router;

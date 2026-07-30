@@ -20,10 +20,10 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Development server starts.
-- [ ] Root route renders without errors.
-- [ ] FSD base folders exist.
-- [ ] `lint`, `typecheck`, `test`, and `build` pass.
+- [x] Development server starts.
+- [x] Root route renders without errors.
+- [x] FSD base folders exist.
+- [x] `lint`, `typecheck`, `test`, and `build` pass.
 
 ---
 
@@ -41,12 +41,12 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] All four required operations have typed request/response boundaries.
-- [ ] `application/problem+json` is parsed.
-- [ ] HTTP status, `code`, `message`, and optional `trace_id` remain available.
-- [ ] `401`, `404`, `422`, and `503` can be distinguished.
-- [ ] No React component calls `fetch` directly.
-- [ ] Contract code does not invent fields absent from OpenAPI.
+- [x] All four required operations have typed request/response boundaries.
+- [x] `application/problem+json` is parsed.
+- [x] HTTP status, `code`, `message`, and optional `trace_id` remain available.
+- [x] `401`, `404`, `422`, and `503` can be distinguished.
+- [x] No React component calls `fetch` directly.
+- [x] Contract code does not invent fields absent from OpenAPI.
 
 ---
 
@@ -66,11 +66,11 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] `/auctions` route placeholder resolves.
-- [ ] unknown routes render a not-found state.
-- [ ] shared error UI supports retry and optional technical details.
-- [ ] focus and keyboard behavior are usable.
-- [ ] layout works at 360px and desktop widths.
+- [x] `/auctions` route placeholder resolves.
+- [x] unknown routes render a not-found state.
+- [x] shared error UI supports retry and optional technical details.
+- [x] focus and keyboard behavior are usable.
+- [x] layout works at 360px and desktop widths.
 
 ## Phase 1 — Stateful mock API
 
@@ -88,11 +88,11 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Seed data conforms to OpenAPI response shapes.
-- [ ] List and detail representations refer to the same auctions.
-- [ ] At least ten documented UI scenarios exist.
-- [ ] Nullable values and every important enum branch are represented.
-- [ ] Mock state can be reset between tests.
+- [x] Seed data conforms to OpenAPI response shapes.
+- [x] List and detail representations refer to the same auctions.
+- [x] At least ten documented UI scenarios exist.
+- [x] Nullable values and every important enum branch are represented.
+- [x] Mock state can be reset between tests.
 
 ---
 
@@ -112,13 +112,13 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] List handler accepts OpenAPI `AuctionListRequest` fields.
-- [ ] Pagination metadata matches returned records.
-- [ ] Required minimum filters work.
-- [ ] Supported sort fields and directions work.
-- [ ] Unknown UUID returns OpenAPI-shaped `404`.
-- [ ] Error triggers return `application/problem+json`.
-- [ ] `all=true` can include rejected/cancelled bids.
+- [x] List handler accepts OpenAPI `AuctionListRequest` fields.
+- [x] Pagination metadata matches returned records.
+- [x] Required minimum filters work.
+- [x] Supported sort fields and directions work.
+- [x] Unknown UUID returns OpenAPI-shaped `404`.
+- [x] Error triggers return `application/problem+json`.
+- [x] `all=true` can include rejected/cancelled bids.
 
 ---
 
@@ -136,14 +136,14 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Valid `{ price }` returns `200`.
-- [ ] Invalid price returns `422` with `errors[].field === "price"`.
-- [ ] Bid is blocked when `can_set_bet` is false.
-- [ ] New/changed bid appears in bid history.
-- [ ] Current price updates consistently.
-- [ ] User `your.bet`, last bid, and trading status update.
-- [ ] Bid places and winner flags remain internally consistent.
-- [ ] Reset helper restores original state.
+- [x] Valid `{ price }` returns `200`.
+- [x] Invalid price returns `422` with `errors[].field === "price"`.
+- [x] Bid is blocked when `can_set_bet` is false.
+- [x] New/changed bid appears in bid history.
+- [x] Current price updates consistently.
+- [x] User `your.bet`, last bid, and trading status update.
+- [x] Bid places and winner flags remain internally consistent.
+- [x] Reset helper restores original state.
 
 ## Phase 2 — Domain models and pure logic
 

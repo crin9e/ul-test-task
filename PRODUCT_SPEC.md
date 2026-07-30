@@ -657,11 +657,9 @@ Must include:
 Must include:
 
 - which parts were produced with AI assistance;
-- decisions made independently by the candidate;
-- rejected AI suggestions and why;
 - areas checked especially carefully;
-- remaining risks;
-- improvements planned with one additional day.
+- remaining risks (fill in after the completion of the final phase);
+- improvements planned with one additional day (fill in after the completion of the final phase);
 
 ## 18. Definition of done
 

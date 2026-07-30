@@ -1,0 +1,12 @@
+.pageHeader {
+  margin-bottom: var(--pico-block-spacing-vertical);
+}
+
+.stateCard {
+  max-width: 48rem;
+  margin: var(--pico-block-spacing-vertical) auto;
+}
+
+.error {
+  border-inline-start: 0.25rem solid var(--pico-del-color);
+}
