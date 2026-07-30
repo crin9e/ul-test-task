@@ -19,8 +19,10 @@ export const auctionQueryKeys = {
   detail: (auctionUuid: string) =>
     [...auctionQueryKeys.details(), auctionUuid] as const,
   betsRoot: () => [...auctionQueryKeys.all, "bets"] as const,
+  betsByAuction: (auctionUuid: string) =>
+    [...auctionQueryKeys.betsRoot(), auctionUuid] as const,
   bets: (auctionUuid: string, all = false) =>
-    [...auctionQueryKeys.betsRoot(), auctionUuid, { all }] as const,
+    [...auctionQueryKeys.betsByAuction(auctionUuid), { all }] as const,
 };
 
 export function shouldRetryAuctionQuery(
@@ -57,10 +59,15 @@ export function useAuctionDetail(
   });
 }
 
-export function useAuctionBets(auctionUuid: string, all = false) {
+export function useAuctionBets(
+  auctionUuid: string,
+  all = false,
+  options: { enabled?: boolean } = {},
+) {
   return useQuery({
     queryKey: auctionQueryKeys.bets(auctionUuid, all),
     queryFn: ({ signal }) => getAuctionBets(auctionUuid, all, signal),
+    enabled: options.enabled ?? true,
     retry: shouldRetryAuctionQuery,
   });
 }

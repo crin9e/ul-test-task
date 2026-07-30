@@ -30,7 +30,11 @@ The auction list keeps filters, sorting, and pagination in the URL. Desktop uses
 
 The `/auctions/$auctionUuid` detail route validates the UUID before API use and renders mapped overview, organizer, ordered route, cargo/vehicle, payment, and trading sections. Protected contacts, exact addresses, cargo prices, and bid-history actions are removed according to the detail DTO flags. `401`, `404`, and `503` responses have distinct states, with `trace_id` available in expandable technical details.
 
+The `/auctions/$auctionUuid/bets` route loads detail before bid history, so hidden history never renders rows or exposes the `all=true` control. Visible history shows unique participant counts, optional cancelled/rejected bids, rank visibility from `hide_places`, and responsive bid cards.
+
 Bid step validation uses the non-null minimum as its base, otherwise zero. Decimal values are compared with scaled integer arithmetic to avoid floating-point noise.
+
+The `/auctions/$auctionUuid/bid` route is gated by detail `can_set_bet`, uses React Hook Form with the Zod bid schema, maps API `422 errors[field=price]` to the input, and prevents duplicate pending submissions. Success invalidates list, detail, and both bid-history query variants, shows a toast, and navigates back to the refreshed auction detail.
 
 ## Verification
 
@@ -80,6 +84,7 @@ The seed set covers every `AuctionStatus`, every `AuctionType`, every `TradingSt
 - Detail, bets, or bid `503`: use UUID `00000000-0000-0000-0000-000000000503`.
 - `404`: use any unknown UUID.
 - Bid `422`: send a non-numeric/non-positive price, violate min/max/step, or bid on an auction where `can_set_bet` is false.
+- Bid form server-field `422`: submit the valid-looking reserved price `499500`.
 
 All mock errors use `application/problem+json` and preserve a deterministic `trace_id`.
 
@@ -97,4 +102,4 @@ The mock derives no-VAT values using a 20% VAT rate. A successful set-bid respon
 
 ## Current scope
 
-Phases 1–4 are implemented: the stateful mock API, domain ViewModels and pure validation, the complete URL-driven auction list, and the responsive auction detail page with privacy enforcement and distinct API states. Later phases build bid history and the bid form.
+Phases 1–6 are implemented: the stateful mock API, domain ViewModels and validation, URL-driven auction list, detail page, gated bid history, and link-addressable set/change-bid form. Phase 7 remains for the final quality and documentation audit.

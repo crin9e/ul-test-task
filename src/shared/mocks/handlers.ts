@@ -641,6 +641,13 @@ export const handlers = [
           "bidding_unavailable",
         );
       }
+      if (body.price === 499_500) {
+        return createValidationResponse(
+          "price",
+          "Тестовая ставка отклонена организатором.",
+          "mock_rejected_price",
+        );
+      }
 
       const constraints = entry.detail.trading.price;
       if (

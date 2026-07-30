@@ -354,11 +354,11 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Participant count uses unique `subscriber_id` values.
-- [ ] Empty strings and nullable price-info fields render safely.
-- [ ] cancellation reason renders only when meaningful.
-- [ ] rank can be hidden without removing other bid data.
-- [ ] tests cover duplicate participants and cancelled bids.
+- [x] Participant count uses unique `subscriber_id` values.
+- [x] Empty strings and nullable price-info fields render safely.
+- [x] cancellation reason renders only when meaningful.
+- [x] rank can be hidden without removing other bid data.
+- [x] tests cover duplicate participants and cancelled bids.
 
 ---
 
@@ -377,13 +377,13 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Page uses `GET /auctions/{auctionUuid}/bets`.
-- [ ] Hidden history renders no bid rows.
-- [ ] Required bid fields are displayed.
-- [ ] rank is hidden when detail `hide_places` is true.
-- [ ] empty `bets` array renders empty state.
-- [ ] `all=true` behavior is supported without bypassing hidden history.
-- [ ] mobile layout remains readable.
+- [x] Page uses `GET /auctions/{auctionUuid}/bets`.
+- [x] Hidden history renders no bid rows.
+- [x] Required bid fields are displayed.
+- [x] rank is hidden when detail `hide_places` is true.
+- [x] empty `bets` array renders empty state.
+- [x] `all=true` behavior is supported without bypassing hidden history.
+- [x] mobile layout remains readable.
 
 ## Phase 6 — Set bid
 
@@ -400,10 +400,10 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Mutation sends only `{ price: number }`.
-- [ ] Success invalidates all affected query families.
-- [ ] `422` field errors remain accessible to the form.
-- [ ] unrelated query data is not invalidated unnecessarily.
+- [x] Mutation sends only `{ price: number }`.
+- [x] Success invalidates all affected query families.
+- [x] `422` field errors remain accessible to the form.
+- [x] unrelated query data is not invalidated unnecessarily.
 
 ---
 
@@ -423,13 +423,13 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Direct URL load fetches detail and renders correctly.
-- [ ] `can_set_bet=false` prevents submission.
-- [ ] local validation covers positive/min/max/step.
-- [ ] pending state prevents duplicate submissions.
-- [ ] `422 price` error appears on the field.
-- [ ] success updates visible data after invalidation.
-- [ ] success navigation behavior is documented.
+- [x] Direct URL load fetches detail and renders correctly.
+- [x] `can_set_bet=false` prevents submission.
+- [x] local validation covers positive/min/max/step.
+- [x] pending state prevents duplicate submissions.
+- [x] `422 price` error appears on the field.
+- [x] success updates visible data after invalidation.
+- [x] success navigation behavior is documented.
 
 ## Phase 7 — Quality, documentation, and final verification
 
@@ -484,7 +484,6 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 **Deliverables:**
 
 - OpenAPI contract audit;
-- component-filename audit;
 - responsive and accessibility review;
 - final automated checks;
 - final manual scenario run.
