@@ -1,0 +1,68 @@
+.list {
+  display: grid;
+  gap: var(--pico-grid-column-gap);
+}
+
+.bid {
+  margin: 0;
+}
+
+.header {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pico-spacing);
+  justify-content: space-between;
+}
+
+.header h2,
+.header p {
+  margin-bottom: 0;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.badges span {
+  background: var(--pico-secondary-background);
+  border-radius: 999px;
+  color: var(--pico-secondary-inverse);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+}
+
+.badges .danger {
+  background: var(--pico-del-color);
+}
+
+.details {
+  display: grid;
+  gap: calc(var(--pico-spacing) / 2) var(--pico-spacing);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+}
+
+.details dt {
+  color: var(--pico-muted-color);
+  font-size: 0.8rem;
+}
+
+.details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 767px) {
+  .details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .details {
+    grid-template-columns: 1fr;
+  }
+}

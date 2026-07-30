@@ -1,0 +1,39 @@
+.card {
+  margin-inline: auto;
+  max-width: 48rem;
+}
+
+.hints {
+  display: grid;
+  gap: calc(var(--pico-spacing) / 2) var(--pico-spacing);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.hints dt {
+  color: var(--pico-muted-color);
+  font-size: 0.8rem;
+}
+
+.hints dd {
+  margin: 0;
+}
+
+.card form {
+  margin-top: var(--pico-block-spacing-vertical);
+}
+
+.card button {
+  margin-top: var(--pico-spacing);
+}
+
+@media (max-width: 600px) {
+  .hints {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 400px) {
+  .hints {
+    grid-template-columns: 1fr;
+  }
+}

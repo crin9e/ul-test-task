@@ -98,8 +98,8 @@ export async function getAuctionBets(
   );
 }
 
-export async function setBid(auctionUuid: string, payload: SetBetRequest): Promise<unknown> {
-  return request<unknown>(`/auctions/${encodeURIComponent(auctionUuid)}/bets`, {
+export async function setBid(auctionUuid: string, payload: SetBetRequest): Promise<void> {
+  return request<void>(`/auctions/${encodeURIComponent(auctionUuid)}/bets`, {
     method: 'POST',
     body: JSON.stringify(payload),
   });
