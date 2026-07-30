@@ -153,6 +153,22 @@ describe('auction ViewModels', () => {
     ))).toBe(true);
   });
 
+  it('maps complete detail sections without scattering DTO fields', () => {
+    const source = mockStore.auctions.find(
+      (entry) => entry.scenario === 'active-first-bid',
+    );
+    expect(source).toBeDefined();
+
+    const viewModel = mapAuctionDetail(source!.detail);
+    expect(viewModel.overviewFields.map((field) => field.label)).toContain('Начало торгов');
+    expect(viewModel.organizerFields.map((field) => field.label)).toContain('ИНН');
+    expect(viewModel.routes.flatMap((route) => route.cargoFields)
+      .map((field) => field.label)).toContain('Вес');
+    expect(viewModel.vehicleFields.map((field) => field.label)).toContain('Типы погрузки');
+    expect(viewModel.paymentFields.map((field) => field.label)).toContain('Валюта');
+    expect(viewModel.tradingFields.map((field) => field.label)).toContain('Шаг без НДС');
+  });
+
   it('does not expose hidden cargo prices or hidden-history actions', () => {
     const cargoHidden = mockStore.auctions.find(
       (entry) => entry.scenario === 'hidden-cargo-price',

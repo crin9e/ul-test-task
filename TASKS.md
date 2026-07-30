@@ -328,15 +328,15 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Page uses `GET /auctions/{auctionUuid}`.
-- [ ] All route points are ordered and rendered.
-- [ ] organizer and contacts render when allowed.
-- [ ] cargo and vehicle requirements render when present.
-- [ ] payment and trading constraints render correctly.
-- [ ] `no_view_cargo_price` hides cargo price.
-- [ ] `hide_points_address_and_contacts` removes protected data.
-- [ ] `hide_bets_history` suppresses bid-history action.
-- [ ] `404`, `401`, and `503` states are distinct.
+- [x] Page uses `GET /auctions/{auctionUuid}`.
+- [x] All route points are ordered and rendered.
+- [x] organizer and contacts render when allowed.
+- [x] cargo and vehicle requirements render when present.
+- [x] payment and trading constraints render correctly.
+- [x] `no_view_cargo_price` hides cargo price.
+- [x] `hide_points_address_and_contacts` removes protected data.
+- [x] `hide_bets_history` suppresses bid-history action.
+- [x] `404`, `401`, and `503` states are distinct.
 
 ## Phase 5 — Bid history
 

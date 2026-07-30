@@ -64,10 +64,14 @@ const routeTree = rootRoute.addChildren([
   bidRoute,
 ]);
 
-export const router = createRouter({
-  routeTree,
-  parseSearch: parseAppSearch,
-  stringifySearch: stringifyAppSearch,
-});
+export function createAppRouter() {
+  return createRouter({
+    routeTree,
+    parseSearch: parseAppSearch,
+    stringifySearch: stringifyAppSearch,
+  });
+}
+
+export const router = createAppRouter();
 
 export type RouterType = typeof router;

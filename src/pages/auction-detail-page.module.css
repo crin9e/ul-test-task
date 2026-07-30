@@ -1,0 +1,73 @@
+.headingSkeleton {
+  animation: pulse 1.4s ease-in-out infinite;
+  background: var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  height: 3rem;
+  margin: var(--pico-block-spacing-vertical) 0;
+  width: min(24rem, 70%);
+}
+
+.skeletonGrid {
+  display: grid;
+  gap: var(--pico-grid-column-gap);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.skeletonGrid article {
+  display: grid;
+  gap: var(--pico-spacing);
+  margin: 0;
+}
+
+.skeletonGrid span {
+  animation: pulse 1.4s ease-in-out infinite;
+  background: var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  display: block;
+  height: 1rem;
+}
+
+.skeletonGrid span:first-child {
+  height: 2rem;
+  width: 45%;
+}
+
+.errorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pico-spacing);
+}
+
+.errorActions a,
+.errorActions button {
+  margin: 0;
+}
+
+.technicalDetails {
+  margin: 0 auto;
+  max-width: 48rem;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@media (max-width: 767px) {
+  .skeletonGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .headingSkeleton,
+  .skeletonGrid span {
+    animation: none;
+  }
+}
