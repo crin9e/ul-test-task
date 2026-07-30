@@ -1,0 +1,92 @@
+.card {
+  display: grid;
+  gap: var(--pico-spacing);
+  margin: 0;
+}
+
+.card section,
+.card dl,
+.card h2,
+.card h3,
+.card p {
+  margin: 0;
+}
+
+.header {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pico-spacing);
+  justify-content: space-between;
+}
+
+.header h2 {
+  font-size: 1.35rem;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.badges span {
+  background: var(--pico-secondary-background);
+  border-radius: 999px;
+  color: var(--pico-secondary-inverse);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+}
+
+.details,
+.compactDetails {
+  display: grid;
+  gap: calc(var(--pico-spacing) / 2) var(--pico-spacing);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.details div,
+.compactDetails div {
+  min-width: 0;
+}
+
+.details dt,
+.compactDetails dt {
+  color: var(--pico-muted-color);
+  font-size: 0.8rem;
+}
+
+.details dd,
+.compactDetails dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.footer {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pico-spacing);
+  justify-content: space-between;
+}
+
+.footer small {
+  flex: 1 1 12rem;
+}
+
+.footer a,
+.footer button {
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .details,
+  .compactDetails {
+    grid-template-columns: 1fr;
+  }
+
+  .footer a,
+  .footer button {
+    width: 100%;
+  }
+}

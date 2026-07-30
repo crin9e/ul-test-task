@@ -1,37 +1,78 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAuction, getAuctionBets, listAuctions } from "./client";
-import { AuctionListRequest } from "./types";
+import {
+  keepPreviousData,
+  type QueryClient,
+  useQuery,
+} from "@tanstack/react-query";
+import { normalizeAuctionListRequest } from "./auction-request";
+import { ApiError, getAuction, getAuctionBets, listAuctions } from "./client";
+import type { AuctionListRequest } from "./types";
 
 export const auctionQueryKeys = {
   all: ["auctions"] as const,
+  lists: () => [...auctionQueryKeys.all, "list"] as const,
   list: (request: AuctionListRequest) =>
-    [...auctionQueryKeys.all, "list", request] as const,
+    [
+      ...auctionQueryKeys.lists(),
+      normalizeAuctionListRequest(request),
+    ] as const,
+  details: () => [...auctionQueryKeys.all, "detail"] as const,
   detail: (auctionUuid: string) =>
-    [...auctionQueryKeys.all, "detail", auctionUuid] as const,
+    [...auctionQueryKeys.details(), auctionUuid] as const,
+  betsRoot: () => [...auctionQueryKeys.all, "bets"] as const,
   bets: (auctionUuid: string, all = false) =>
-    [...auctionQueryKeys.all, "bets", auctionUuid, all] as const,
+    [...auctionQueryKeys.betsRoot(), auctionUuid, { all }] as const,
 };
 
+export function shouldRetryAuctionQuery(
+  failureCount: number,
+  error: unknown,
+): boolean {
+  if (error instanceof ApiError) {
+    return error.status === 503 && failureCount < 1;
+  }
+
+  return failureCount < 1;
+}
+
 export function useAuctionList(request: AuctionListRequest) {
+  const normalizedRequest = normalizeAuctionListRequest(request);
+
   return useQuery({
-    queryKey: auctionQueryKeys.list(request),
-    queryFn: () => listAuctions(request),
-    retry: 1,
+    queryKey: auctionQueryKeys.list(normalizedRequest),
+    queryFn: ({ signal }) => listAuctions(normalizedRequest, signal),
+    placeholderData: keepPreviousData,
+    retry: shouldRetryAuctionQuery,
   });
 }
 
-export function useAuctionDetail(auctionUuid: string) {
+export function useAuctionDetail(
+  auctionUuid: string,
+  options: { enabled?: boolean } = {},
+) {
   return useQuery({
     queryKey: auctionQueryKeys.detail(auctionUuid),
-    queryFn: () => getAuction(auctionUuid),
-    retry: 1,
+    queryFn: ({ signal }) => getAuction(auctionUuid, signal),
+    enabled: options.enabled ?? true,
+    retry: shouldRetryAuctionQuery,
   });
 }
 
 export function useAuctionBets(auctionUuid: string, all = false) {
   return useQuery({
     queryKey: auctionQueryKeys.bets(auctionUuid, all),
-    queryFn: () => getAuctionBets(auctionUuid, all),
-    retry: 1,
+    queryFn: ({ signal }) => getAuctionBets(auctionUuid, all, signal),
+    retry: shouldRetryAuctionQuery,
+  });
+}
+
+export function prefetchAuctionDetail(
+  queryClient: QueryClient,
+  auctionUuid: string,
+): Promise<void> {
+  return queryClient.prefetchQuery({
+    queryKey: auctionQueryKeys.detail(auctionUuid),
+    queryFn: ({ signal }) => getAuction(auctionUuid, signal),
+    retry: shouldRetryAuctionQuery,
+    staleTime: 30_000,
   });
 }

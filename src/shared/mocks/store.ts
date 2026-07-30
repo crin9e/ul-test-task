@@ -7,19 +7,16 @@ import type {
   BidMeasurementType,
   TradingStatus,
 } from "../api/types";
+import { cityOptions } from "../config/cities";
 
 export const CURRENT_USER_SUBSCRIBER_ID = 13;
 export const UNAUTHORIZED_AUCTION_UUID = "00000000-0000-0000-0000-000000000401";
 export const UNAVAILABLE_AUCTION_UUID = "00000000-0000-0000-0000-000000000503";
 
-export const mockCities = [
-  { gc_id: 59, name: "Пермь" },
-  { gc_id: 77, name: "Москва" },
-  { gc_id: 66, name: "Екатеринбург" },
-  { gc_id: 16, name: "Казань" },
-  { gc_id: 54, name: "Новосибирск" },
-  { gc_id: 23, name: "Краснодар" },
-] as const;
+export const mockCities = cityOptions.map((city) => ({
+  gc_id: city.gcId,
+  name: city.name,
+}));
 
 export interface MockAuctionEntry {
   scenario: string;

@@ -35,6 +35,10 @@ export interface AuctionListItemViewModel {
   organizerName: string | null;
   organizerHidden: boolean;
   routeSummary: string;
+  loadCity: string;
+  loadDate: string;
+  unloadCity: string;
+  unloadDate: string;
   cargoName: string;
   weight: string;
   volume: string;
@@ -137,6 +141,10 @@ export function mapAuctionListItem(
       : formatNullableValue(dto.organizer?.organization_name),
     organizerHidden,
     routeSummary: getAuctionRouteSummary(dto.route),
+    loadCity: formatNullableValue(dto.route?.load?.city),
+    loadDate: formatDateTime(dto.route?.load?.date),
+    unloadCity: formatNullableValue(dto.route?.unload?.city),
+    unloadDate: formatDateTime(dto.route?.unload?.date),
     cargoName: formatNullableValue(dto.cargo?.name),
     weight: formatQuantity(dto.cargo?.weight, 'т'),
     volume: formatQuantity(dto.cargo?.volume, 'м³'),

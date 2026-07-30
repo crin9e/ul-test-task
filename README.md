@@ -24,7 +24,9 @@ Pico CSS is loaded globally before application styles. `src/styles.css` contains
 
 Auction DTOs remain unchanged at the API boundary and are converted to display ViewModels in `entities/auction`. Enum labels have safe runtime fallbacks, hidden-data flags remove protected values, and numeric zero remains distinct from missing data.
 
-The `/auctions` search parser accepts URL strings or typed values, replaces malformed values with safe defaults, discards invalid enum members, and maps valid state to a normalized `AuctionListRequest`. Supported sort values are `start_time_asc`, `start_time_desc`, `current_price_asc`, `current_price_desc`, `price_per_km_asc`, and `price_per_km_desc`.
+The `/auctions` search parser accepts URL strings or typed values, replaces malformed values with safe defaults, discards invalid enum members, and maps valid state to a normalized `AuctionListRequest`. Array filters use readable comma-separated URL values such as `status=Winner,Accepted`; previously generated JSON-array URLs remain compatible. Supported sort values are `start_time_asc`, `start_time_desc`, `current_price_asc`, `current_price_desc`, `price_per_km_asc`, and `price_per_km_desc`.
+
+The auction list keeps filters, sorting, and pagination in the URL. Desktop uses a persistent Pico filter panel; mobile uses a native modal dialog whose open state is the only value stored in Zustand. TanStack Query retains visible page data while the next page loads and prefetches auction detail on mouse or keyboard intent.
 
 Bid step validation uses the non-null minimum as its base, otherwise zero. Decimal values are compared with scaled integer arithmetic to avoid floating-point noise.
 
@@ -93,4 +95,4 @@ The mock derives no-VAT values using a 20% VAT rate. A successful set-bid respon
 
 ## Current scope
 
-Phases 1 and 2 are implemented: the stateful mock API, domain ViewModels and formatters, list-search parsing and request mapping, and bid validation. Later phases build the complete list, detail, history, and bid-form UI.
+Phases 1–3 are implemented: the stateful mock API, domain ViewModels and formatters, pure validation logic, and the complete URL-driven auction list with filters, sorting, pagination, responsive cards, prefetching, and loading/empty/error states. Later phases build the complete detail, history, and bid-form UI.

@@ -65,19 +65,37 @@ async function request<T>(path: string, init?: RequestInit, params?: Record<stri
   return payload as T;
 }
 
-export async function listAuctions(payload: AuctionListRequest): Promise<AuctionListResponseBase> {
+export async function listAuctions(
+  payload: AuctionListRequest,
+  signal?: AbortSignal,
+): Promise<AuctionListResponseBase> {
   return request<AuctionListResponseBase>('/auctions/list', {
     method: 'POST',
     body: JSON.stringify(payload),
+    signal,
   });
 }
 
-export async function getAuction(auctionUuid: string): Promise<AuctionShowResponse> {
-  return request<AuctionShowResponse>(`/auctions/${encodeURIComponent(auctionUuid)}`);
+export async function getAuction(
+  auctionUuid: string,
+  signal?: AbortSignal,
+): Promise<AuctionShowResponse> {
+  return request<AuctionShowResponse>(
+    `/auctions/${encodeURIComponent(auctionUuid)}`,
+    { signal },
+  );
 }
 
-export async function getAuctionBets(auctionUuid: string, all = false): Promise<BetListResponse> {
-  return request<BetListResponse>(`/auctions/${encodeURIComponent(auctionUuid)}/bets`, undefined, { all });
+export async function getAuctionBets(
+  auctionUuid: string,
+  all = false,
+  signal?: AbortSignal,
+): Promise<BetListResponse> {
+  return request<BetListResponse>(
+    `/auctions/${encodeURIComponent(auctionUuid)}/bets`,
+    { signal },
+    { all },
+  );
 }
 
 export async function setBid(auctionUuid: string, payload: SetBetRequest): Promise<unknown> {

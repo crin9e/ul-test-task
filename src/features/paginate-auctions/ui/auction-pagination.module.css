@@ -1,0 +1,25 @@
+.pagination {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pico-spacing);
+  justify-content: center;
+  margin-top: calc(var(--pico-spacing) * 1.5);
+}
+
+.pagination button {
+  margin: 0;
+  width: auto;
+}
+
+@media (max-width: 480px) {
+  .pagination button {
+    flex: 1 1 7rem;
+  }
+
+  .pagination span {
+    order: -1;
+    text-align: center;
+    width: 100%;
+  }
+}

@@ -1,19 +1,87 @@
-.auctionGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
-  gap: var(--pico-grid-column-gap);
-}
-
-.auctionGrid article {
-  margin: 0;
-}
-
-.auctionGrid footer {
+.summary {
+  align-items: baseline;
   display: flex;
   flex-wrap: wrap;
   gap: var(--pico-spacing);
+  justify-content: space-between;
+  margin-bottom: var(--pico-spacing);
 }
 
-.auctionGrid footer a {
+.summary p {
   margin: 0;
+}
+
+.listLayout {
+  display: grid;
+  gap: calc(var(--pico-spacing) * 1.5);
+  grid-template-columns: minmax(17rem, 0.34fr) minmax(0, 1fr);
+}
+
+.results {
+  min-width: 0;
+}
+
+.auctionGrid {
+  display: grid;
+  gap: var(--pico-grid-column-gap);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+}
+
+.skeleton {
+  display: grid;
+  gap: var(--pico-spacing);
+  margin: 0;
+}
+
+.skeleton span {
+  animation: pulse 1.4s ease-in-out infinite;
+  background: var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  display: block;
+  height: 1rem;
+}
+
+.skeleton span:first-child {
+  height: 2rem;
+  width: 55%;
+}
+
+.skeleton span:nth-child(2) {
+  height: 4rem;
+}
+
+.skeleton span:nth-child(3) {
+  width: 75%;
+}
+
+.skeleton span:last-child {
+  height: 2.5rem;
+  width: 45%;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@media (max-width: 767px) {
+  .listLayout {
+    display: block;
+  }
+
+  .filterColumn {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton span {
+    animation: none;
+  }
 }

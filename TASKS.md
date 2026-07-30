@@ -233,11 +233,11 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Query keys include normalized request state.
-- [ ] `401`, `404`, and `422` are not automatically retried.
-- [ ] recoverable network/`503` failures use limited retry.
-- [ ] detail can be prefetched by UUID.
-- [ ] hooks are independent of page JSX.
+- [x] Query keys include normalized request state.
+- [x] `401`, `404`, and `422` are not automatically retried.
+- [x] recoverable network/`503` failures use limited retry.
+- [x] detail can be prefetched by UUID.
+- [x] hooks are independent of page JSX.
 
 ---
 
@@ -256,12 +256,12 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Applying filters updates URL search params.
-- [ ] Filter/sort changes reset page to `1`.
-- [ ] Reset returns to documented defaults.
-- [ ] Reloading/sharing the URL restores filter state.
-- [ ] Mobile dialog is keyboard accessible.
-- [ ] Zustand stores only dialog UI state.
+- [x] Applying filters updates URL search params.
+- [x] Filter/sort changes reset page to `1`.
+- [x] Reset returns to documented defaults.
+- [x] Reloading/sharing the URL restores filter state.
+- [x] Mobile dialog is keyboard accessible.
+- [x] Zustand stores only dialog UI state.
 
 ---
 
@@ -280,12 +280,12 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Required assignment fields appear when present.
-- [ ] Missing nullable values render safely.
-- [ ] Hidden organization data is not exposed.
-- [ ] Primary action follows business rules.
-- [ ] Card contains no invalid nested interactive elements.
-- [ ] Detail prefetch runs on pointer/focus intent.
+- [x] Required assignment fields appear when present.
+- [x] Missing nullable values render safely.
+- [x] Hidden organization data is not exposed.
+- [x] Primary action follows business rules.
+- [x] Card contains no invalid nested interactive elements.
+- [x] Detail prefetch runs on pointer/focus intent.
 
 ---
 
@@ -305,13 +305,13 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Page uses `POST /auctions/list` through TanStack Query.
-- [ ] Pagination preserves filters and sort.
-- [ ] previous/next limits are enforced.
-- [ ] empty state offers reset action.
-- [ ] retry works after recoverable errors.
-- [ ] `401` and `503` have distinct messages.
-- [ ] layout is usable on mobile and desktop.
+- [x] Page uses `POST /auctions/list` through TanStack Query.
+- [x] Pagination preserves filters and sort.
+- [x] previous/next limits are enforced.
+- [x] empty state offers reset action.
+- [x] retry works after recoverable errors.
+- [x] `401` and `503` have distinct messages.
+- [x] layout is usable on mobile and desktop.
 
 ## Phase 4 — Auction detail
 
