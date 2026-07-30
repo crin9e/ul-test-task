@@ -1,0 +1,19 @@
+.auctionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--pico-grid-column-gap);
+}
+
+.auctionGrid article {
+  margin: 0;
+}
+
+.auctionGrid footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pico-spacing);
+}
+
+.auctionGrid footer a {
+  margin: 0;
+}

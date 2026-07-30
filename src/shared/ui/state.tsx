@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import styles from './state.module.css';
 
 interface StateCardProps {
   title: string;
@@ -7,9 +8,16 @@ interface StateCardProps {
   tone?: 'default' | 'danger';
 }
 
+interface StatePageProps extends StateCardProps {
+  busy?: boolean;
+}
+
 export function StateCard({ title, description, action, tone = 'default' }: StateCardProps) {
   return (
-    <article aria-live="polite" className={tone === 'danger' ? 'card error' : 'card'}>
+    <article
+      aria-live="polite"
+      className={`${styles.stateCard} ${tone === 'danger' ? styles.error : ''}`}
+    >
       <h2>{title}</h2>
       <p>{description}</p>
       {action}
@@ -17,17 +25,25 @@ export function StateCard({ title, description, action, tone = 'default' }: Stat
   );
 }
 
+function StatePage({ busy = false, ...cardProps }: StatePageProps) {
+  return (
+    <main className="container" aria-busy={busy || undefined}>
+      <StateCard {...cardProps} />
+    </main>
+  );
+}
+
 export function LoadingState() {
-  return <StateCard title="Загрузка" description="Пожалуйста, подождите." />;
+  return <StatePage busy title="Загрузка" description="Пожалуйста, подождите." />;
 }
 
 export function EmptyState() {
-  return <StateCard title="Пусто" description="По текущим фильтрам данных нет." />;
+  return <StatePage title="Пусто" description="По текущим фильтрам данных нет." />;
 }
 
 export function ErrorState({ onRetry, message }: { onRetry?: () => void; message?: string }) {
   return (
-    <StateCard
+    <StatePage
       title="Не удалось загрузить данные"
       description={message ?? 'Попробуйте повторить запрос.'}
       tone="danger"
@@ -39,7 +55,7 @@ export function ErrorState({ onRetry, message }: { onRetry?: () => void; message
 export function PageShell({ title, description, children }: { title: string; description?: string; children: ReactNode }) {
   return (
     <main className="container">
-      <header className="page-header">
+      <header className={styles.pageHeader}>
         <div>
           <h1>{title}</h1>
           {description ? <p>{description}</p> : null}

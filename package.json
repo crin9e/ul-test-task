@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --max-warnings=0",
     "typecheck": "tsc -b --pretty false",
-    "test": "vitest run"
+    "test": "vitest run",
+    "generate:types": "openapi-typescript openapi/openapi.auctions.v0.json -o src/shared/api/generated-types.ts"
   },
   "dependencies": {
     "@picocss/pico": "^2.0.6",
@@ -35,9 +36,15 @@
     "eslint-plugin-react-hooks": "^4.0.0",
     "eslint-plugin-react-refresh": "^0.3.0",
     "jsdom": "^25.0.1",
+    "openapi-typescript": "^7.13.0",
     "prettier": "^3.4.0",
     "typescript": "^5.6.3",
     "vite": "^5.4.10",
     "vitest": "^2.1.0"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
