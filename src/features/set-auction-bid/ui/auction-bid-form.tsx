@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import type { AuctionShowResponse } from "../../../shared/api/types";
-import { getErrorMessage } from "../../../shared/api/client";
-import { formatMoney, getBidMeasurementLabel } from "../../../entities/auction";
+import type { AuctionShowResponse } from "../../../shared/api";
+import { getBidMeasurementLabel } from "../../../entities/auction";
+import { formatMoney } from "../../../shared/lib";
 import { getBidPriceApiError } from "../model/api-errors";
 import { createBidSchema, getBidPriceConstraints } from "../model/validation";
 import { useSetAuctionBid } from "../api/use-set-auction-bid";
@@ -39,22 +39,7 @@ export function AuctionBidForm({
   } = useForm<BidInputValues>({
     defaultValues: { price: currentBid },
   });
-  const mutation = useSetAuctionBid(auctionUuid, {
-    onSuccess: () => {
-      toast.success(
-        detail.trading.your?.bet ? "Ставка изменена." : "Ставка принята.",
-      );
-      onSuccess();
-    },
-    onError: (error) => {
-      const priceError = getBidPriceApiError(error);
-      if (priceError) {
-        setError("price", { type: "server", message: priceError });
-        return;
-      }
-      toast.error(getErrorMessage(error));
-    },
-  });
+  const mutation = useSetAuctionBid(auctionUuid);
 
   const submit = handleSubmit((values) => {
     clearErrors();
@@ -68,7 +53,20 @@ export function AuctionBidForm({
       });
       return;
     }
-    mutation.mutate(parsed.data.price);
+    mutation.mutate(parsed.data.price, {
+      onSuccess: () => {
+        toast.success(
+          detail.trading.your?.bet ? "Ставка изменена." : "Ставка принята.",
+        );
+        onSuccess();
+      },
+      onError: (error) => {
+        const priceError = getBidPriceApiError(error);
+        if (priceError) {
+          setError("price", { type: "server", message: priceError });
+        }
+      },
+    });
   });
 
   return (

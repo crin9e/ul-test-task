@@ -1,0 +1,9 @@
+dist
+node_modules
+public/mockServiceWorker.js
+src/shared/api/generated-types.ts
+openapi
+AGENTS.md
+PRODUCT_SPEC.md
+TASKS.md
+package-lock.json

@@ -16,9 +16,39 @@ npm run dev
 
 The development build starts an MSW browser worker and serves the mock API under `/api/v1`.
 
+## Routes
+
+| Route                         | Purpose                                                                          |
+| ----------------------------- | -------------------------------------------------------------------------------- |
+| `/`                           | Application landing page                                                         |
+| `/auctions`                   | URL-driven auction list, filters, sorting, and pagination                        |
+| `/auctions/:auctionUuid`      | Auction detail                                                                   |
+| `/auctions/:auctionUuid/bets` | Bid history; `all=true` includes cancelled/rejected bids when history is visible |
+| `/auctions/:auctionUuid/bid`  | Directly linkable set/change-bid form                                            |
+
+Auction path parameters are UUIDs, not database IDs. Invalid UUIDs are rejected before an API request, and unknown valid UUIDs demonstrate the `404` state.
+
+## Architecture
+
+The source follows Feature-Sliced Design with downward-only dependencies:
+
+```text
+app → pages → features → entities → shared
+```
+
+- `app` owns the entrypoint, providers, global styles, TanStack Router configuration, and full-router integration tests.
+- `pages` own complete route screens and their one-off page sections.
+- `features` own reusable or central business interactions such as auction filtering and bid submission.
+- `entities` own auction/bid ViewModels, pure mappers, and entity UI.
+- `shared` owns the fetch client, OpenAPI types, query definitions, MSW backend, utilities, and reusable UI states.
+
+Every slice and Shared segment exposes a curated public `index.ts`; external code does not import slice internals. Production imports point only to strictly lower layers, while App composes all domains. The optional Widgets layer is omitted because the detail and bid-history blocks are each used by only one page.
+
+TanStack Query is the only server-state store. Zustand contains only the mobile filter-dialog state. Network DTOs preserve OpenAPI field names and are mapped to display models before rendering.
+
 ## Styling
 
-Pico CSS is loaded globally before application styles. `src/styles.css` contains only Pico design-token overrides and global accessibility behavior. Component-specific layout and visual variants use CSS Modules so they do not override Pico's shared `.container`, `.grid`, or card styles.
+Pico CSS is loaded globally before application styles. `src/app/styles/global.css` contains only Pico design-token overrides and global accessibility behavior. Component-specific layout and visual variants use CSS Modules so they do not override Pico's shared `.container`, `.grid`, or card styles.
 
 ## Domain Logic
 
@@ -40,10 +70,19 @@ The `/auctions/$auctionUuid/bid` route is gated by detail `can_set_bet`, uses Re
 
 ```bash
 npm run lint
+npm run check:fsd
 npm run typecheck
 npm run test
 npm run build
 ```
+
+The critical integration suite can be run separately:
+
+```bash
+npm run test -- --run src/app/tests/auctions-page.test.tsx src/app/tests/bid-page.test.tsx src/app/tests/bets-page.test.tsx src/shared/mocks/handlers.test.ts
+```
+
+It covers URL-to-request filtering, successful stateful mutation, server-side `422` field errors, blocked bidding, hidden history, and list/detail/bets consistency. MSW and its mutable store reset after every test.
 
 ## Stateful mock API
 
@@ -100,6 +139,30 @@ The mock keeps one active bid for the current user (`subscriber_id=13`). A later
 
 The mock derives no-VAT values using a 20% VAT rate. A successful set-bid response has an empty `200` body, matching the OpenAPI operation.
 
+## Manual verification checklist
+
+Use the UUIDs and triggers above after `npm run dev`:
+
+- [ ] Open `/auctions`, apply multiple filters, paginate, reload, and confirm the URL restores the same state.
+- [ ] Hover or focus a card detail link, then open it and confirm the detail route renders directly.
+- [ ] Place a bid on the active first-bid scenario and confirm the refreshed detail shows the new price and status.
+- [ ] Open that auction's history and confirm the current user's bid is present.
+- [ ] Submit `499500` and confirm the server `422` message appears on the price field.
+- [ ] Open the finished scenario's bid route and confirm submission is unavailable.
+- [ ] Open the hidden-history scenario with and without `?all=true` and confirm no bid rows or protected controls appear.
+- [ ] Trigger list/detail `401`, unknown-UUID `404`, and `503`, then confirm distinct Russian error states and technical details.
+- [ ] Check list, detail, history, filters, and bid form at 360px and desktop width using keyboard-only navigation.
+
+The automated suite verifies the corresponding data and navigation behavior. Responsive CSS, semantic structure, labels, focus behavior, and reduced-motion rules were additionally reviewed in code; a physical-device/browser matrix was not available in this environment.
+
+## Limitations and trade-offs
+
+- MSW state is intentionally in-memory; a full browser reload resets bids to deterministic seed data.
+- The app has no real authentication, persistence, or production backend connection.
+- Runtime handling rejects missing or malformed JSON response bodies, but does not perform full Zod validation of every successful OpenAPI response field.
+- Mock latency and failures are deterministic and cannot represent every production network race.
+- Responsive behavior is covered by component tests and CSS review, not a physical-device/browser compatibility matrix.
+
 ## Current scope
 
-Phases 1–6 are implemented: the stateful mock API, domain ViewModels and validation, URL-driven auction list, detail page, gated bid history, and link-addressable set/change-bid form. Phase 7 remains for the final quality and documentation audit.
+Phases 1–7 are implemented: the stateful mock API, domain ViewModels and validation, URL-driven auction list, detail page, gated bid history, link-addressable set/change-bid form, critical integration coverage, and final quality/documentation audit.

@@ -1,5 +1,15 @@
 type SearchValue = unknown;
 
+export function deserializeBoolean(value: unknown): boolean | undefined {
+  if (value === true || value === "true" || value === "1" || value === 1) {
+    return true;
+  }
+  if (value === false || value === "false" || value === "0" || value === 0) {
+    return false;
+  }
+  return undefined;
+}
+
 function parseSearchValue(value: string): SearchValue {
   if (value.startsWith("[") && value.endsWith("]")) {
     try {
@@ -42,9 +52,7 @@ function encodeSearchValue(value: string, preserveCommas: boolean): string {
   return preserveCommas ? encoded.replace(/%2C/g, ",") : encoded;
 }
 
-export function stringifyAppSearch(
-  search: Record<string, unknown>,
-): string {
+export function stringifyAppSearch(search: Record<string, unknown>): string {
   const entries = Object.entries(search).flatMap(([key, value]) => {
     if (
       value === undefined ||

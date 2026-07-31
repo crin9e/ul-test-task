@@ -3,18 +3,15 @@ import {
   createRoute,
   createRouter,
   Outlet,
+  redirect,
 } from "@tanstack/react-router";
 import { parseAuctionListSearch } from "../features/filter-auctions";
-import { parseAuctionBetsSearch } from "../features/view-auction-bets";
-import { AuctionsPage } from "../pages/auctions-page";
-import { AuctionDetailPage } from "../pages/auction-detail-page";
-import { BetsPage } from "../pages/bets-page";
-import { BidPage } from "../pages/bid-page";
-import { NotFoundPage } from "../pages/not-found-page";
-import {
-  parseAppSearch,
-  stringifyAppSearch,
-} from "../shared/lib/search-params";
+import { AuctionDetailPage } from "../pages/auction-detail";
+import { AuctionsPage } from "../pages/auctions";
+import { BetsPage, parseAuctionBetsSearch } from "../pages/bets";
+import { BidPage } from "../pages/bid";
+import { NotFoundPage } from "../pages/not-found";
+import { parseAppSearch, stringifyAppSearch } from "../shared/lib";
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -50,12 +47,11 @@ const bidRoute = createRoute({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-  component: () => (
-    <main className="container">
-      <h1>Грузовые аукционы</h1>
-      <p>Добро пожаловать в приложение.</p>
-    </main>
-  ),
+  loader: () => {
+    throw redirect({
+      href: "auctions",
+    });
+  },
 });
 
 const routeTree = rootRoute.addChildren([
@@ -75,5 +71,3 @@ export function createAppRouter() {
 }
 
 export const router = createAppRouter();
-
-export type RouterType = typeof router;

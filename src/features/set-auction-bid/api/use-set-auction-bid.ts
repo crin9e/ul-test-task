@@ -3,13 +3,7 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { ApiError, setBid } from "../../../shared/api/client";
-import { auctionQueryKeys } from "../../../shared/api/queries";
-
-interface UseSetAuctionBidOptions {
-  onSuccess?: () => void;
-  onError?: (error: ApiError | Error) => void;
-}
+import { auctionQueryKeys, setBid } from "../../../shared/api";
 
 export async function invalidateAuctionAfterBid(
   queryClient: QueryClient,
@@ -28,20 +22,13 @@ export async function invalidateAuctionAfterBid(
   ]);
 }
 
-export function useSetAuctionBid(
-  auctionUuid: string,
-  options: UseSetAuctionBidOptions = {},
-) {
+export function useSetAuctionBid(auctionUuid: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (price: number) => setBid(auctionUuid, { price }),
     onSuccess: async () => {
       await invalidateAuctionAfterBid(queryClient, auctionUuid);
-      options.onSuccess?.();
-    },
-    onError: (error) => {
-      options.onError?.(error);
     },
   });
 }

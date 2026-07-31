@@ -2,7 +2,7 @@ import { format, isValid, parseISO } from "date-fns";
 import { useEffect, useId, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { cityOptions } from "../../../shared/config/cities";
+import { cityOptions } from "../../../shared/config";
 import type { AuctionListSearch } from "../model/search";
 import { useAuctionFiltersDialog } from "../model/dialog-store";
 import styles from "./auction-filters.module.css";
@@ -107,11 +107,7 @@ function getDefaultValues(search: AuctionListSearch): FilterFormValues {
           ? "true"
           : "false",
     isBidder:
-      search.isBidder === undefined
-        ? ""
-        : search.isBidder
-          ? "true"
-          : "false",
+      search.isBidder === undefined ? "" : search.isBidder ? "true" : "false",
     currentPriceFrom: search.currentPriceFrom?.toString() ?? "",
     currentPriceTo: search.currentPriceTo?.toString() ?? "",
     sort: search.sort ?? "",
@@ -153,9 +149,7 @@ function FilterForm({
       status: data.status.length
         ? (data.status as AuctionListSearch["status"])
         : undefined,
-      statuses: data.statuses.length
-        ? data.statuses.map(Number)
-        : undefined,
+      statuses: data.statuses.length ? data.statuses.map(Number) : undefined,
       aucType: data.aucType.length
         ? (data.aucType as AuctionListSearch["aucType"])
         : undefined,
@@ -167,9 +161,7 @@ function FilterForm({
       isBidder: toOptionalBoolean(data.isBidder),
       currentPriceFrom: toOptionalNumber(data.currentPriceFrom),
       currentPriceTo: toOptionalNumber(data.currentPriceTo),
-      sort: data.sort
-        ? (data.sort as AuctionListSearch["sort"])
-        : undefined,
+      sort: data.sort ? (data.sort as AuctionListSearch["sort"]) : undefined,
     });
   });
 
@@ -249,11 +241,7 @@ function FilterForm({
         <div className={styles.optionGrid}>
           {auctionStatusOptions.map(([value, label]) => (
             <label key={value}>
-              <input
-                type="checkbox"
-                value={value}
-                {...register("statuses")}
-              />
+              <input type="checkbox" value={value} {...register("statuses")} />
               {label}
             </label>
           ))}
@@ -319,21 +307,29 @@ function FilterForm({
         <select id={`${idPrefix}-sort`} {...register("sort")}>
           <option value="">По умолчанию</option>
           <option value="start_time_asc">Начало торгов: сначала ранние</option>
-          <option value="start_time_desc">Начало торгов: сначала поздние</option>
-          <option value="current_price_asc">Текущая цена: по возрастанию</option>
+          <option value="start_time_desc">
+            Начало торгов: сначала поздние
+          </option>
+          <option value="current_price_asc">
+            Текущая цена: по возрастанию
+          </option>
           <option value="current_price_desc">Текущая цена: по убыванию</option>
           <option value="price_per_km_asc">Цена за км: по возрастанию</option>
           <option value="price_per_km_desc">Цена за км: по убыванию</option>
         </select>
       </label>
 
-      {errors.root?.message ? (
+      {errors.root?.message && (
         <small role="alert">{errors.root.message}</small>
-      ) : null}
+      )}
 
       <div className={styles.actions}>
         <button type="submit">Применить</button>
-        <button type="button" className="secondary outline" onClick={resetFilters}>
+        <button
+          type="button"
+          className="secondary outline"
+          onClick={resetFilters}
+        >
           Сбросить
         </button>
       </div>

@@ -1,7 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { describe, expect, it } from "vitest";
-import { ApiError } from "../../../shared/api/client";
-import { auctionQueryKeys } from "../../../shared/api/queries";
+import { ApiError, auctionQueryKeys } from "../../../shared/api";
 import { invalidateAuctionAfterBid } from "../api/use-set-auction-bid";
 import { getBidPriceApiError } from "./api-errors";
 
@@ -37,8 +36,14 @@ describe("set-bid API integration", () => {
     const otherDetailKey = auctionQueryKeys.detail(otherUuid);
     const unrelatedKey = ["cities"] as const;
 
-    [listKey, detailKey, betsKey, allBetsKey, otherDetailKey, unrelatedKey]
-      .forEach((queryKey) => queryClient.setQueryData(queryKey, {}));
+    [
+      listKey,
+      detailKey,
+      betsKey,
+      allBetsKey,
+      otherDetailKey,
+      unrelatedKey,
+    ].forEach((queryKey) => queryClient.setQueryData(queryKey, {}));
 
     await invalidateAuctionAfterBid(queryClient, auctionUuid);
 

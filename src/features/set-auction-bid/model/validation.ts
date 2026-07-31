@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import type { AuctionShowTradingPrice } from '../../../shared/api/types';
+import { z } from "zod";
+import type { AuctionShowTradingPrice } from "../../../shared/api";
 
 export interface BidPriceConstraints {
   min: number | null;
@@ -8,21 +8,29 @@ export interface BidPriceConstraints {
 }
 
 function decimalPlaces(value: number): number {
-  const [coefficient, exponentText] = value.toString().toLowerCase().split('e');
-  const fractionLength = coefficient.split('.')[1]?.length ?? 0;
+  const [coefficient, exponentText] = value.toString().toLowerCase().split("e");
+  const fractionLength = coefficient.split(".")[1]?.length ?? 0;
   const exponent = exponentText ? Number(exponentText) : 0;
   return Math.max(0, fractionLength - exponent);
 }
 
-export function isBidStepAligned(price: number, step: number, base = 0): boolean {
-  if (!Number.isFinite(price) || !Number.isFinite(step) || !Number.isFinite(base) || step <= 0) {
+export function isBidStepAligned(
+  price: number,
+  step: number,
+  base = 0,
+): boolean {
+  if (
+    !Number.isFinite(price) ||
+    !Number.isFinite(step) ||
+    !Number.isFinite(base) ||
+    step <= 0
+  ) {
     return false;
   }
-  const precision = Math.min(8, Math.max(
-    decimalPlaces(price),
-    decimalPlaces(step),
-    decimalPlaces(base),
-  ));
+  const precision = Math.min(
+    8,
+    Math.max(decimalPlaces(price), decimalPlaces(step), decimalPlaces(base)),
+  );
   const scale = 10 ** precision;
   const priceUnits = Math.round(price * scale);
   const stepUnits = Math.round(step * scale);
@@ -45,12 +53,13 @@ export function getBidPriceConstraints(
 }
 
 export function createBidSchema(constraints: BidPriceConstraints) {
-  const priceSchema = z.number({
-    required_error: 'Укажите цену.',
-    invalid_type_error: 'Цена должна быть числом.',
-  })
-    .finite('Цена должна быть конечным числом.')
-    .positive('Цена должна быть больше нуля.')
+  const priceSchema = z
+    .number({
+      required_error: "Укажите цену.",
+      invalid_type_error: "Цена должна быть числом.",
+    })
+    .finite("Цена должна быть конечным числом.")
+    .positive("Цена должна быть больше нуля.")
     .superRefine((price, context) => {
       if (constraints.min !== null && price < constraints.min) {
         context.addIssue({
@@ -65,8 +74,8 @@ export function createBidSchema(constraints: BidPriceConstraints) {
         });
       }
       if (
-        constraints.step !== null
-        && !isBidStepAligned(price, constraints.step, getBidStepBase(constraints))
+        constraints.step !== null &&
+        !isBidStepAligned(price, constraints.step, getBidStepBase(constraints))
       ) {
         context.addIssue({
           code: z.ZodIssueCode.custom,
@@ -77,5 +86,3 @@ export function createBidSchema(constraints: BidPriceConstraints) {
 
   return z.object({ price: priceSchema });
 }
-
-export type BidFormValues = z.infer<ReturnType<typeof createBidSchema>>;
