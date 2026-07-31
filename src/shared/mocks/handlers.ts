@@ -5,7 +5,7 @@ import type {
   BetItem,
   ProblemDetail,
   ValidationProblem,
-} from "../api/types";
+} from "../api";
 import {
   CURRENT_USER_SUBSCRIBER_ID,
   mockStore,

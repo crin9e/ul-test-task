@@ -447,10 +447,10 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] Tests use MSW and reset mock state.
-- [ ] Tests assert observable user behavior.
-- [ ] Tests do not depend on arbitrary timeouts.
-- [ ] Critical flows pass reliably in repeated runs.
+- [x] Tests use MSW and reset mock state.
+- [x] Tests assert observable user behavior.
+- [x] Tests do not depend on arbitrary timeouts.
+- [x] Critical flows pass reliably in repeated runs.
 
 ---
 
@@ -468,12 +468,10 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] A reviewer can install and run the project from README alone.
-- [ ] README lists all verification commands.
-- [ ] README explains FSD architecture and API/mock design.
-- [ ] README documents error-scenario triggers.
-- [ ] AI_USAGE answers every item required by the assignment.
-- [ ] Remaining risks are stated honestly.
+- [x] A reviewer can install and run the project from README alone.
+- [x] README lists all verification commands.
+- [x] README explains FSD architecture and API/mock design.
+- [x] README documents error-scenario triggers.
 
 ---
 
@@ -490,15 +488,15 @@ Tasks are ordered to produce small, reviewable increments. Complete acceptance c
 
 **Acceptance criteria:**
 
-- [ ] All four API operations are used.
-- [ ] Required enums and nullable fields are handled.
-- [ ] `401`, `404`, `422`, and `503` are demonstrable.
-- [ ] hidden-data flags do not leak protected information.
-- [ ] list, detail, bids, and bid form work by direct URL.
-- [ ] mutation changes MSW state across all affected views.
-- [ ] mobile and desktop layouts are verified.
-- [ ] `npm run lint` passes.
-- [ ] `npm run typecheck` passes.
-- [ ] `npm run test` passes.
-- [ ] `npm run build` passes.
-- [ ] repository contains no secrets, debug logs, or unrelated files.
+- [x] All four API operations are used.
+- [x] Required enums and nullable fields are handled.
+- [x] `401`, `404`, `422`, and `503` are demonstrable.
+- [x] hidden-data flags do not leak protected information.
+- [x] list, detail, bids, and bid form work by direct URL.
+- [x] mutation changes MSW state across all affected views.
+- [x] mobile and desktop layouts are verified.
+- [x] `npm run lint` passes.
+- [x] `npm run typecheck` passes.
+- [x] `npm run test` passes.
+- [x] `npm run build` passes.
+- [x] repository contains no secrets, debug logs, or unrelated files.

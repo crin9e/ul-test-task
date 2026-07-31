@@ -6,8 +6,8 @@ import type {
   BetItem,
   BidMeasurementType,
   TradingStatus,
-} from "../api/types";
-import { cityOptions } from "../config/cities";
+} from "../api";
+import { cityOptions } from "../config";
 
 export const CURRENT_USER_SUBSCRIBER_ID = 13;
 export const UNAUTHORIZED_AUCTION_UUID = "00000000-0000-0000-0000-000000000401";
@@ -39,6 +39,7 @@ interface ScenarioDefinition {
   uuid: string;
   id: number;
   cargoNum: string;
+  cargoName: string;
   auctionType: AuctionType;
   auctionStatus: AuctionStatus;
   tradingStatus: TradingStatus;
@@ -54,6 +55,7 @@ interface ScenarioDefinition {
   hideContacts?: boolean;
   hideCargoPrice?: boolean;
   hidePlaces?: boolean;
+  multiPointRoute?: boolean;
   nullable?: boolean;
   bets?: BetItem[];
 }
@@ -113,6 +115,10 @@ function createAuction(definition: ScenarioDefinition): MockAuctionEntry {
     mockCities[
       definition.unloadCityIndex ?? (definition.id + 1) % mockCities.length
     ];
+  const additionalLoadCity =
+    mockCities[(definition.id + 2) % mockCities.length];
+  const additionalUnloadCity =
+    mockCities[(definition.id + 3) % mockCities.length];
   const day = String((definition.id % 20) + 1).padStart(2, "0");
   const loadDate = `2026-06-${day}T09:00:00+03:00`;
   const unloadDate = `2026-06-${day}T18:00:00+03:00`;
@@ -168,18 +174,18 @@ function createAuction(definition: ScenarioDefinition): MockAuctionEntry {
         address: hideContacts ? undefined : `Склад ${definition.id}`,
         date: loadDate,
         city_gc_id: loadCity.gc_id,
-        points_count: 1,
+        points_count: definition.multiPointRoute ? 2 : 1,
       },
       unload: {
         city: unloadCity.name,
         address: hideContacts ? undefined : `Терминал ${definition.id}`,
         date: unloadDate,
         city_gc_id: unloadCity.gc_id,
-        points_count: 1,
+        points_count: definition.multiPointRoute ? 2 : 1,
       },
     },
     cargo: {
-      name: nullable ? "" : `Груз ${definition.id}`,
+      name: nullable ? "" : definition.cargoName,
       weight: nullable ? 0 : 10 + definition.id,
       volume: nullable ? 0 : 30 + definition.id,
       body_type: definition.id % 2 === 0 ? "фургон" : "тентованный",
@@ -381,7 +387,7 @@ function createAuction(definition: ScenarioDefinition): MockAuctionEntry {
           loading_address: hideContacts ? "" : `Склад ${definition.id}`,
         },
         cargo: {
-          name: `Груз ${definition.id}`,
+          name: definition.cargoName,
           package_name: "паллеты",
           weight: nullable ? "0.000" : "10.000",
           volume: nullable ? "0.000" : "30.000",
@@ -410,7 +416,7 @@ function createAuction(definition: ScenarioDefinition): MockAuctionEntry {
           loading_address: hideContacts ? "" : `Терминал ${definition.id}`,
         },
         cargo: {
-          name: `Груз ${definition.id}`,
+          name: definition.cargoName,
           package_name: "паллеты",
           weight: nullable ? "0.000" : "10.000",
           volume: nullable ? "0.000" : "30.000",
@@ -429,6 +435,45 @@ function createAuction(definition: ScenarioDefinition): MockAuctionEntry {
     hide_bets_history: hideHistory,
   };
 
+  if (definition.multiPointRoute) {
+    const [firstLoad, finalUnload] = detail.routes;
+    detail.routes = [
+      firstLoad,
+      {
+        ...firstLoad,
+        row_num: 2,
+        comment: "Дополнительная погрузка",
+        location: {
+          ...firstLoad.location,
+          city_name: additionalLoadCity.name,
+          city_full_name: `${additionalLoadCity.name}, Россия`,
+          city_gc_id: additionalLoadCity.gc_id,
+          loading_address: hideContacts
+            ? ""
+            : `Склад консолидации ${definition.id}`,
+        },
+      },
+      {
+        ...finalUnload,
+        row_num: 3,
+        comment: "Частичная выгрузка",
+        location: {
+          ...finalUnload.location,
+          city_name: additionalUnloadCity.name,
+          city_full_name: `${additionalUnloadCity.name}, Россия`,
+          city_gc_id: additionalUnloadCity.gc_id,
+          loading_address: hideContacts
+            ? ""
+            : `Распределительный центр ${definition.id}`,
+        },
+      },
+      {
+        ...finalUnload,
+        row_num: 4,
+      },
+    ];
+  }
+
   return {
     scenario: definition.scenario,
     uuid: definition.uuid,
@@ -445,11 +490,13 @@ function createSeedAuctions(): MockAuctionEntry[] {
       uuid: "11111111-1111-4111-8111-111111111111",
       id: 1,
       cargoNum: "AUC-001",
+      cargoName: "Мороженое",
       auctionType: "Request",
       auctionStatus: "Auction",
       tradingStatus: "NotParticipating",
       canSetBet: true,
       currentPrice: 82_000,
+      multiPointRoute: true,
       bets: [createBet(101, 1, 21, 82_000)],
     },
     {
@@ -457,6 +504,7 @@ function createSeedAuctions(): MockAuctionEntry[] {
       uuid: "22222222-2222-4222-8222-222222222222",
       id: 2,
       cargoNum: "AUC-002",
+      cargoName: "Строительные материалы",
       auctionType: "Down",
       auctionStatus: "Auction",
       tradingStatus: "Leading",
@@ -474,6 +522,7 @@ function createSeedAuctions(): MockAuctionEntry[] {
       uuid: "33333333-3333-4333-8333-333333333333",
       id: 3,
       cargoNum: "AUC-003",
+      cargoName: "Подсолнечное масло",
       auctionType: "Up",
       auctionStatus: "Auction",
       tradingStatus: "Losing",
@@ -491,6 +540,7 @@ function createSeedAuctions(): MockAuctionEntry[] {
       uuid: "44444444-4444-4444-8444-444444444444",
       id: 4,
       cargoNum: "AUC-004",
+      cargoName: "Бытовая техника",
       auctionType: "FixPrice",
       auctionStatus: "Finished",
       tradingStatus: "Winner",
@@ -516,6 +566,7 @@ function createSeedAuctions(): MockAuctionEntry[] {
       uuid: "55555555-5555-4555-8555-555555555555",
       id: 5,
       cargoNum: "AUC-005",
+      cargoName: "Бумага в рулонах",
       auctionType: "Request",
       auctionStatus: "Planning",
       tradingStatus: "Confirmed",
@@ -526,6 +577,7 @@ function createSeedAuctions(): MockAuctionEntry[] {
       uuid: "66666666-6666-4666-8666-666666666666",
       id: 6,
       cargoNum: "AUC-006",
+      cargoName: "Замороженные овощи",
       auctionType: "Down",
       auctionStatus: "DeterminateWinner",
       tradingStatus: "ChoosingWinner",
@@ -538,6 +590,7 @@ function createSeedAuctions(): MockAuctionEntry[] {
       uuid: "77777777-7777-4777-8777-777777777777",
       id: 7,
       cargoNum: "AUC-007",
+      cargoName: "Автомобильные запчасти",
       auctionType: "Up",
       auctionStatus: "WaitDeal",
       tradingStatus: "OnPending",
@@ -549,6 +602,7 @@ function createSeedAuctions(): MockAuctionEntry[] {
       uuid: "88888888-8888-4888-8888-888888888888",
       id: 8,
       cargoNum: "AUC-008",
+      cargoName: "Медицинское оборудование",
       auctionType: "FixPrice",
       auctionStatus: "InProgress",
       tradingStatus: "Confirmed",
@@ -561,6 +615,7 @@ function createSeedAuctions(): MockAuctionEntry[] {
       uuid: "99999999-9999-4999-8999-999999999999",
       id: 9,
       cargoNum: "AUC-009",
+      cargoName: "Пиломатериалы",
       auctionType: "Unknown",
       auctionStatus: "Stopped",
       tradingStatus: "Accepted",
@@ -573,6 +628,7 @@ function createSeedAuctions(): MockAuctionEntry[] {
       uuid: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
       id: 10,
       cargoNum: "AUC-010",
+      cargoName: "Керамическая плитка",
       auctionType: "Request",
       auctionStatus: "Canceled",
       tradingStatus: "Unknown",
@@ -583,6 +639,7 @@ function createSeedAuctions(): MockAuctionEntry[] {
       uuid: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
       id: 11,
       cargoNum: "AUC-011",
+      cargoName: "Металлопрокат",
       auctionType: "Unknown",
       auctionStatus: "Unknown",
       tradingStatus: "Unknown",

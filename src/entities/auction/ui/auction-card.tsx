@@ -1,11 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import type { AuctionListItem } from "../../../shared/api/types";
-import {
-  prefetchAuctionDetail,
-  useAuctionDetail,
-} from "../../../shared/api/queries";
-import { EMPTY_VALUE, formatMoney } from "../model/formatters";
+import type { AuctionListItem } from "../../../shared/api";
+import { prefetchAuctionDetail, useAuctionDetail } from "../../../shared/api";
+import { EMPTY_VALUE, formatMoney } from "../../../shared/lib";
 import { mapAuctionListItem } from "../model/view-model";
 import styles from "./auction-card.module.css";
 
@@ -27,7 +24,8 @@ export function AuctionCard({ auction }: AuctionCardProps) {
   const bidStep = prefetchedDetail
     ? formatMoney(
         prefetchedDetail.trading.price?.step,
-        prefetchedDetail.payment.currency_code ?? prefetchedDetail.cargo.currency,
+        prefetchedDetail.payment.currency_code ??
+          prefetchedDetail.cargo.currency,
       )
     : null;
 
@@ -38,11 +36,7 @@ export function AuctionCard({ auction }: AuctionCardProps) {
   };
 
   return (
-    <article
-      className={styles.card}
-      onMouseEnter={prefetchDetail}
-      onFocusCapture={prefetchDetail}
-    >
+    <article className={styles.card}>
       <header className={styles.header}>
         <div>
           <small>Заявка</small>
@@ -99,12 +93,12 @@ export function AuctionCard({ auction }: AuctionCardProps) {
             <dt>Кузов</dt>
             <dd>{viewModel.bodyType}</dd>
           </div>
-          {viewModel.truckCount !== null && viewModel.truckCount > 1 ? (
+          {viewModel.truckCount !== null && viewModel.truckCount > 1 && (
             <div>
               <dt>Машин</dt>
               <dd>{viewModel.truckCount}</dd>
             </div>
-          ) : null}
+          )}
         </dl>
       </section>
 
@@ -120,12 +114,12 @@ export function AuctionCard({ auction }: AuctionCardProps) {
             <dt>Цена за км</dt>
             <dd>{viewModel.pricePerKm}</dd>
           </div>
-          {bidStep && bidStep !== EMPTY_VALUE ? (
+          {bidStep && bidStep !== EMPTY_VALUE && (
             <div>
               <dt>Шаг ставки</dt>
               <dd>{bidStep}</dd>
             </div>
-          ) : null}
+          )}
           <div>
             <dt>Моя ставка</dt>
             <dd>{viewModel.hasBid ? "Есть" : "Нет"}</dd>
@@ -139,7 +133,7 @@ export function AuctionCard({ auction }: AuctionCardProps) {
         ) : (
           <small>Организатор: {viewModel.organizerName}</small>
         )}
-        {auctionUuid && viewModel.action.destination === "bid" ? (
+        {auctionUuid && viewModel.action.destination === "bid" && (
           <Link
             role="button"
             to="/auctions/$auctionUuid/bid"
@@ -147,21 +141,22 @@ export function AuctionCard({ auction }: AuctionCardProps) {
           >
             {viewModel.action.label}
           </Link>
-        ) : null}
-        {auctionUuid && viewModel.action.destination === "bets" ? (
+        )}
+        {auctionUuid && viewModel.action.destination === "bets" && (
           <Link
             role="button"
+            className="primary"
             to="/auctions/$auctionUuid/bets"
             params={{ auctionUuid }}
           >
             {viewModel.action.label}
           </Link>
-        ) : null}
-        {viewModel.action.disabled ? (
+        )}
+        {viewModel.action.disabled && (
           <button type="button" disabled title={viewModel.action.label}>
             {viewModel.action.label}
           </button>
-        ) : null}
+        )}
       </footer>
     </article>
   );

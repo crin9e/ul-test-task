@@ -1,5 +1,4 @@
-import { ApiError } from "../../../shared/api/client";
-import type { ValidationProblem } from "../../../shared/api/types";
+import { ApiError, type ValidationProblem } from "../../../shared/api";
 
 function isValidationProblem(
   problem: ApiError["problem"],
@@ -17,7 +16,6 @@ export function getBidPriceApiError(error: unknown): string | null {
   }
 
   return (
-    error.problem.errors.find((item) => item.field === "price")?.message ??
-    null
+    error.problem.errors.find((item) => item.field === "price")?.message ?? null
   );
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { BetItem } from "../../../shared/api/types";
+import type { BetItem } from "../../../shared/api";
 import {
   countBidParticipants,
   mapBidRow,

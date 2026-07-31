@@ -1,8 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import { afterAll, afterEach, beforeAll, vi } from "vitest";
 import { setupServer } from "msw/node";
-import { handlers } from "../shared/mocks/handlers";
-import { resetMockStore } from "../shared/mocks/store";
+import { handlers, resetMockStore } from "../shared/mocks";
 
 const server = setupServer(...handlers);
 

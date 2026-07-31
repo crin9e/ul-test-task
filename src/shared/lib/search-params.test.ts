@@ -1,7 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { parseAppSearch, stringifyAppSearch } from "./search-params";
+import {
+  deserializeBoolean,
+  parseAppSearch,
+  stringifyAppSearch,
+} from "./search-params";
 
 describe("application search serialization", () => {
+  it("deserializes common boolean URL values", () => {
+    expect(deserializeBoolean("1")).toBe(true);
+    expect(deserializeBoolean("false")).toBe(false);
+    expect(deserializeBoolean("invalid")).toBeUndefined();
+  });
+
   it("serializes arrays as readable comma-separated values", () => {
     expect(
       stringifyAppSearch({
@@ -27,9 +37,7 @@ describe("application search serialization", () => {
 
   it("keeps existing JSON-array links compatible", () => {
     expect(
-      parseAppSearch(
-        '?status=%5B%22Winner%22%2C%22Accepted%22%5D',
-      ),
+      parseAppSearch("?status=%5B%22Winner%22%2C%22Accepted%22%5D"),
     ).toEqual({
       status: ["Winner", "Accepted"],
     });

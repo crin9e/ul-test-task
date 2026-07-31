@@ -1,22 +1,19 @@
-import type { AuctionListRequest } from '../../../shared/api/types';
-import { normalizeAuctionListRequest } from '../../../shared/api/auction-request';
-import {
-  parseAuctionListSearch,
-  type AuctionListSearch,
-} from './search';
+import type { AuctionListRequest } from "../../../shared/api";
+import { normalizeAuctionListRequest } from "../../../shared/api";
+import { parseAuctionListSearch, type AuctionListSearch } from "./search";
 
-export { normalizeAuctionListRequest } from '../../../shared/api/auction-request';
+export { normalizeAuctionListRequest } from "../../../shared/api";
 
-type AuctionSortField = 'start_time' | 'current_price' | 'price_per_km';
-type AuctionSortDirection = 'asc' | 'desc';
+type AuctionSortField = "start_time" | "current_price" | "price_per_km";
+type AuctionSortDirection = "asc" | "desc";
 
 function mapSortValue(
-  value: AuctionListSearch['sort'],
+  value: AuctionListSearch["sort"],
 ): Partial<Record<AuctionSortField, AuctionSortDirection>> | undefined {
   if (!value) {
     return undefined;
   }
-  const separatorIndex = value.lastIndexOf('_');
+  const separatorIndex = value.lastIndexOf("_");
   const field = value.slice(0, separatorIndex) as AuctionSortField;
   const direction = value.slice(separatorIndex + 1) as AuctionSortDirection;
   return { [field]: direction };
@@ -41,8 +38,4 @@ export function buildAuctionListRequest(value: unknown): AuctionListRequest {
     current_price_to: search.currentPriceTo,
     sort: mapSortValue(search.sort),
   });
-}
-
-export function getAuctionListQueryKeyInput(value: unknown): AuctionListRequest {
-  return buildAuctionListRequest(value);
 }

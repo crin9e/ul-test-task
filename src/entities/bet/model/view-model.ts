@@ -1,10 +1,10 @@
+import type { BetItem } from "../../../shared/api";
 import {
   EMPTY_VALUE,
   formatDateTime,
   formatMoney,
   formatNullableValue,
-} from "../../auction";
-import type { BetItem } from "../../../shared/api/types";
+} from "../../../shared/lib";
 
 export interface BidRowViewModel {
   id: number | null;
@@ -30,7 +30,9 @@ export function countBidParticipants(bets: readonly BetItem[]): number {
   return new Set(
     bets
       .map((bet) => bet.subscriber_id)
-      .filter((subscriberId): subscriberId is number => subscriberId !== undefined),
+      .filter(
+        (subscriberId): subscriberId is number => subscriberId !== undefined,
+      ),
   ).size;
 }
 
@@ -49,10 +51,8 @@ export function mapBidRow(
   } = {},
 ): BidRowViewModel {
   const cancellationReason = bet.cancel_reason?.trim() || null;
-  const priceWithVat =
-    bet.price_info?.price_with_vat ?? bet.price_with_vat;
-  const priceWithoutVat =
-    bet.price_info?.price_no_vat ?? bet.price_no_vat;
+  const priceWithVat = bet.price_info?.price_with_vat ?? bet.price_with_vat;
+  const priceWithoutVat = bet.price_info?.price_no_vat ?? bet.price_no_vat;
   const vatRate = bet.price_info?.vat_rate?.trim();
 
   return {
